@@ -37,7 +37,11 @@ public class KafkaPoller {
 
     private void pollLoop() {
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(List.of("orders"));
+        consumer.subscribe(
+                List.of("orders"),
+                new SafeRebalanceListener(consumer, queue, tracker)
+        );
+
 
         try {
             while (true) {
