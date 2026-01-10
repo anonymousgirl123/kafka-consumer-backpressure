@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Maven build output
+target/
+
+kafka-consumer-backpressure.iml
+
+
