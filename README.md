@@ -158,13 +158,11 @@ In all scenarios:
 ### Start Kafka (Docker)
 ```bash
 docker compose up -d
+
 Run the Consumer
-bash
-Copy code
 mvn clean spring-boot:run
+
 Produce Messages
-bash
-Copy code
 docker exec -it kafka kafka-console-producer \
   --topic orders \
   --bootstrap-server localhost:9092
