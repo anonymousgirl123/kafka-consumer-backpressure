@@ -12,9 +12,14 @@ import java.util.*;
 @Component
 public class KafkaPoller {
 
+    private static final int PAUSE_THRESHOLD = 1500;
+    private static final int RESUME_THRESHOLD = 500;
+
     private final Properties props;
     private final RecordQueue queue;
     private final OffsetTracker tracker;
+
+    private volatile boolean paused = false;
 
     public KafkaPoller(
             @Qualifier("kafkaConsumerProps") Properties props,
@@ -36,6 +41,27 @@ public class KafkaPoller {
 
         try {
             while (true) {
+
+                // 🔹 Pause if downstream is saturated
+                if (!paused && queue.depth() >= PAUSE_THRESHOLD) {
+                    Set<TopicPartition> assigned = consumer.assignment();
+                    if (!assigned.isEmpty()) {
+                        consumer.pause(assigned);
+                        paused = true;
+                        System.out.println("⏸ Paused partitions: " + assigned);
+                    }
+                }
+
+                // 🔹 Resume when pressure drops
+                if (paused && queue.depth() <= RESUME_THRESHOLD) {
+                    Set<TopicPartition> pausedPartitions = consumer.paused();
+                    if (!pausedPartitions.isEmpty()) {
+                        consumer.resume(pausedPartitions);
+                        paused = false;
+                        System.out.println("▶ Resumed partitions: " + pausedPartitions);
+                    }
+                }
+
                 ConsumerRecords<String, String> records =
                         consumer.poll(Duration.ofMillis(100));
 
@@ -43,7 +69,7 @@ public class KafkaPoller {
                     queue.enqueue(record);
                 }
 
-                // 🔑 Commit ONLY from the polling consumer
+                // 🔹 Commit processed offsets (same consumer!)
                 Map<TopicPartition, OffsetAndMetadata> offsets =
                         tracker.snapshot();
 
