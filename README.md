@@ -59,7 +59,13 @@ This redesign restores **predictable scaling and stability**.
 
 ## 🏗 Final Architecture (High Level)
 
-----
+ <img width="403" height="533" alt="image" src="https://github.com/user-attachments/assets/4e793d62-6bb2-4ba0-99bd-963077a72173" />
+
+
+## 🏗 Sequence Diagram
+
+ <img width="529" height="266" alt="image" src="https://github.com/user-attachments/assets/7af7074b-bd61-43b6-ba5a-9cc74d4f2f5b" />
+
 
 
 
