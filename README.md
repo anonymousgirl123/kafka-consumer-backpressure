@@ -173,6 +173,6 @@ docker exec -it kafka kafka-console-producer \
   --topic orders \
   --bootstrap-server localhost:9092
 
-
+```
 
 
