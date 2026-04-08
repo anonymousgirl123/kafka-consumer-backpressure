@@ -163,6 +163,7 @@ In all scenarios:
 ## 🚀 How to Run Locally
 
 ### Start Kafka (Docker)
+
 ```bash
 docker compose up -d
 
