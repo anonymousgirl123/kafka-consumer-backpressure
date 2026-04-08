@@ -82,7 +82,7 @@ This redesign restores **predictable scaling and stability**.
 
 ### Kafka Poll Thread
 - Polls records
-- Applies pause / resume
+- Applies pause/resume
 - Commits offsets
 - Handles rebalance callbacks
 
@@ -97,7 +97,7 @@ This redesign restores **predictable scaling and stability**.
 - No Kafka access
 
 ### Offset Tracker
-- Tracks highest processed offset per partition
+- Tracks the highest processed offset per partition
 - Supports rebalance-safe commits
 
 ### Rebalance Listener
